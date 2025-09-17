@@ -1,0 +1,9 @@
+node_modules/
+coverage/
+dist/
+drizzle/
+*.log
+.env
+package-lock.json
+yarn.lock
+bun.lock
