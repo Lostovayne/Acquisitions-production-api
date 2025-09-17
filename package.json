@@ -3,6 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "imports": {
+    "#models/*": "./src/models/*.js",
+    "#config/*": "./src/config/*.js",
+    "#controllers/*": "./src/controllers/*.js",
+    "#routes/*": "./src/routes/*.js",
+    "#utils/*": "./src/utils/*.js",
+    "#middlewares/*": "./src/middlewares/*.js",
+    "#services/*": "./src/services/*.js",
+    "#validations/*": "./src/validations/*.js"
+  },
   "type": "module",
   "scripts": {
     "dev": "node --watch src/index.js",
@@ -27,9 +37,14 @@
   "homepage": "https://github.com/Lostovayne/acquisitions-production-api#readme",
   "dependencies": {
     "@neondatabase/serverless": "^1.0.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.2",
     "drizzle-orm": "^0.44.5",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.1",
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.35.0",
