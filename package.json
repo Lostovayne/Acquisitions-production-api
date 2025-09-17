@@ -1,0 +1,25 @@
+{
+  "name": "acquisitions-production-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lostovayne/acquisitions-production-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Lostovayne/acquisitions-production-api/issues"
+  },
+  "homepage": "https://github.com/Lostovayne/acquisitions-production-api#readme",
+  "dependencies": {
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0"
+  }
+}
