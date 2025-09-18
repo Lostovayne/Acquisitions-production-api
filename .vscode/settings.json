@@ -1,0 +1,13 @@
+{
+  "typescript.suggest.autoImports": "on",
+  "javascript.suggest.autoImports": "on",
+  "typescript.preferences.includePackageJsonAutoImports": "on",
+  "javascript.preferences.includePackageJsonAutoImports": "on",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "typescript.suggest.completeFunctionCalls": true,
+  "javascript.suggest.completeFunctionCalls": true,
+  "editor.suggest.localityBonus": true,
+  "typescript.suggest.includeCompletionsForImportStatements": true,
+  "javascript.suggest.includeCompletionsForImportStatements": true
+}

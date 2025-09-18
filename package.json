@@ -37,6 +37,7 @@
   "homepage": "https://github.com/Lostovayne/acquisitions-production-api#readme",
   "dependencies": {
     "@neondatabase/serverless": "^1.0.1",
+    "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",
