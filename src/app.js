@@ -1,4 +1,5 @@
 import logger from '#config/logger';
+import authRoutes from '#routes/auth.routes';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
@@ -18,10 +19,20 @@ app.use(
     stream: { write: message => logger.info(message.trim()) },
   })
 );
+app.get('/', (req, res) => res.send('Welcome to the API'));
 
-app.get('/', (_req, res) => {
-  logger.info('Root endpoint accessed');
-  res.status(200).send('Hello, World!');
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'OK',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+  });
 });
+
+app.get('/api', (req, res) =>
+  res.status(200).json({ message: 'API is running' })
+);
+
+app.use('/api/auth', authRoutes);
 
 export default app;
