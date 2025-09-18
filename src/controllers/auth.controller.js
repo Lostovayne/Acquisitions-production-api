@@ -1,6 +1,6 @@
-import logger from '#config/logger.js';
-import { signupSchema } from '#models/user.model.js';
-import { formatValidationErrors } from '#validations/util.validation.js';
+import logger from '#config/logger';
+import { formatValidationErrors } from '#utils/format';
+import { signupSchema } from '#validations/auth.validation';
 
 export const signup = async (req, res, next) => {
   try {
