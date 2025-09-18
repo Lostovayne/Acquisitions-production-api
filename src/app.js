@@ -19,6 +19,8 @@ app.use(
     stream: { write: message => logger.info(message.trim()) },
   })
 );
+
+// Routes
 app.get('/', (req, res) => res.send('Welcome to the API'));
 
 app.get('/health', (req, res) => {
