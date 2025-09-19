@@ -1,12 +1,14 @@
 import logger from '#config/logger';
 import { errorHandler, notFoundHandler } from '#middlewares/error.middleware';
 import { securityMiddleware } from '#middlewares/security.middleware';
-import authRoutes from '#routes/auth.routes';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
+
+import authRoutes from '#routes/auth.routes';
+import userRoutes from '#routes/users.routes';
 
 const app = express();
 
@@ -24,7 +26,7 @@ app.use(
 app.use(securityMiddleware);
 
 // Routes
-app.get('/', (req, res) => res.send('Welcome to the API'));
+app.get('/', (req, res) => res.send('Welcome to the API owo!'));
 
 app.get('/health', (req, res) => {
   const isDevelopment = process.env.NODE_ENV === 'development';
@@ -49,6 +51,7 @@ app.get('/api', (req, res) =>
 );
 
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 
 // 404 handler - must be after all routes
 app.use(notFoundHandler);
