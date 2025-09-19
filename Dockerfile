@@ -25,7 +25,7 @@ USER nextjs
 EXPOSE 3000
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+HEALTHCHECK --interval=300s --timeout=3s --start-period=5s --retries=3 \
   CMD node -e "const http = require('http'); \
   const options = { host: 'localhost', port: 3000, timeout: 2000 }; \
   const req = http.request(options, (res) => { process.exit(res.statusCode === 200 ? 0 : 1); }); \
