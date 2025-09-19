@@ -201,8 +201,8 @@ POST {{apiUrl}}/auth/sign-up
 Content-Type: application/json
 
 {
-  "name": "Jo",
-  "email": "jo@example.com",
+  "name": "Joel",
+  "email": "joel@example.com",
   "password": "password123",
   "role": "user"
 }

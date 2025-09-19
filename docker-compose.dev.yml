@@ -20,7 +20,7 @@ services:
       start_period: 10s
     restart: unless-stopped
 
-  # Application service
+    # Application service
   app:
     build:
       context: .

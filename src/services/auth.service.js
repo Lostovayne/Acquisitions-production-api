@@ -1,9 +1,13 @@
 import { db } from '#config/database';
 import logger from '#config/logger';
-import { users } from '#models/user.model';
-import { eq } from 'drizzle-orm';
-import { DuplicateResourceError, AuthenticationError, DatabaseError } from '#utils/errors';
 import { ERROR_MESSAGES } from '#constants/http-status';
+import { users } from '#models/user.model';
+import {
+  AuthenticationError,
+  DatabaseError,
+  DuplicateResourceError,
+} from '#utils/errors';
+import { eq } from 'drizzle-orm';
 
 import bcrypt from 'bcrypt';
 
@@ -38,12 +42,13 @@ export const authenticateUser = async ({ email, password }) => {
     }
 
     const isValidPassword = await verifyPassword(password, user.password);
-    
+
     if (!isValidPassword) {
       throw new AuthenticationError(ERROR_MESSAGES.INVALID_CREDENTIALS);
     }
 
     // Return user without password
+    // eslint-disable-next-line no-unused-vars
     const { password: _, ...userWithoutPassword } = user;
     return userWithoutPassword;
   } catch (error) {
@@ -51,7 +56,7 @@ export const authenticateUser = async ({ email, password }) => {
     if (error instanceof AuthenticationError) {
       throw error;
     }
-    
+
     // Log and throw database error for unexpected issues
     logger.error('Error authenticating user:', error);
     throw new DatabaseError('Authentication service unavailable');
@@ -83,7 +88,7 @@ export const createUser = async ({ name, email, password, role = 'user' }) => {
     if (error instanceof DuplicateResourceError) {
       throw error;
     }
-    
+
     // Log and throw database error for unexpected issues
     logger.error('Error creating user:', error);
     throw new DatabaseError('Failed to create user');

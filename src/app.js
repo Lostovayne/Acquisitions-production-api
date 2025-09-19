@@ -1,6 +1,4 @@
 import logger from '#config/logger';
-import { errorHandler, notFoundHandler } from '#middlewares/error.middleware';
-import { securityMiddleware } from '#middlewares/security.middleware';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
@@ -9,6 +7,9 @@ import morgan from 'morgan';
 
 import authRoutes from '#routes/auth.routes';
 import userRoutes from '#routes/users.routes';
+
+import { errorHandler, notFoundHandler } from '#middlewares/error.middleware';
+import { securityMiddleware } from '#middlewares/security.middleware';
 
 const app = express();
 
@@ -26,7 +27,7 @@ app.use(
 app.use(securityMiddleware);
 
 // Routes
-app.get('/', (req, res) => res.send('Welcome to the API owo!'));
+app.get('/', (req, res) => res.send('Welcome to the API uwu!'));
 
 app.get('/health', (req, res) => {
   const isDevelopment = process.env.NODE_ENV === 'development';

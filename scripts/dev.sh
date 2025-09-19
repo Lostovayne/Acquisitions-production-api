@@ -32,13 +32,27 @@ if ! grep -q ".neon_local/" .gitignore 2>/dev/null; then
     echo "✅ Added .neon_local/ to .gitignore"
 fi
 
-echo "📦 Building and starting development containers..."
+echo "📦 Starting development containers (use --build if dependencies changed)..."
 echo "   - Neon Local proxy will create an ephemeral database branch"
 echo "   - Application will run with hot reload enabled"
 echo ""
 
-# Start development environment first
-docker compose -f docker-compose.dev.yml --env-file .env.development up -d --build
+# Check if dependencies changed (compare hash of package files)
+PACKAGE_HASH_FILE=".last_package_hash"
+CURRENT_HASH=$(sha256sum package.json package-lock.json 2>/dev/null | sha256sum | cut -d' ' -f1)
+LAST_HASH=$(cat $PACKAGE_HASH_FILE 2>/dev/null || echo "")
+
+if [ "$CURRENT_HASH" != "$LAST_HASH" ]; then
+    echo "📦 Dependencies changed, rebuilding containers..."
+    BUILD_FLAG="--build"
+    echo "$CURRENT_HASH" > $PACKAGE_HASH_FILE
+else
+    echo "📦 No dependency changes, starting containers with hot reload..."
+    BUILD_FLAG=""
+fi
+
+# Start development environment
+docker compose -f docker-compose.dev.yml --env-file .env.development up -d $BUILD_FLAG
 
 echo "⏳ Waiting for Neon Local to be ready..."
 sleep 10

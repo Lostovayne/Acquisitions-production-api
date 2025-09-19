@@ -1,0 +1,161 @@
+### Users API Endpoints Testing
+
+@baseUrl = http://localhost:3000/api
+@token = {{signin_response.response.headers.set-cookie}}
+
+### 1. Sign up as admin to get authentication
+POST {{baseUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "name": "Admin User",
+  "email": "admin@example.com",
+  "password": "admin123",
+  "role": "admin"
+}
+
+### 2. Sign in to get authentication token
+# @name signin_response
+POST {{baseUrl}}/auth/signin
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "admin123"
+}
+
+### 3. Get all users (Admin only)
+GET {{baseUrl}}/users
+Cookie: {{token}}
+
+### 4. Get all users with pagination and filters
+GET {{baseUrl}}/users?page=1&limit=5&role=user&search=john
+Cookie: {{token}}
+
+### 5. Get user by ID
+GET {{baseUrl}}/users/1
+Cookie: {{token}}
+
+### 6. Create new user (Admin only)
+POST {{baseUrl}}/users
+Content-Type: application/json
+Cookie: {{token}}
+
+{
+  "name": "John Doe",
+  "email": "john.doe@example.com",
+  "password": "password123",
+  "role": "user"
+}
+
+### 7. Update user
+PUT {{baseUrl}}/users/2
+Content-Type: application/json
+Cookie: {{token}}
+
+{
+  "name": "John Smith",
+  "email": "john.smith@example.com"
+}
+
+### 8. Update user password
+PUT {{baseUrl}}/users/2
+Content-Type: application/json
+Cookie: {{token}}
+
+{
+  "password": "newPassword123"
+}
+
+### 9. Try to update user role (should work for admin)
+PUT {{baseUrl}}/users/2
+Content-Type: application/json
+Cookie: {{token}}
+
+{
+  "role": "admin"
+}
+
+### 10. Delete user (Admin only)
+DELETE {{baseUrl}}/users/2
+Cookie: {{token}}
+
+### 11. Test validation errors - Invalid email
+POST {{baseUrl}}/users
+Content-Type: application/json
+Cookie: {{token}}
+
+{
+  "name": "Test User",
+  "email": "invalid-email",
+  "password": "password123"
+}
+
+### 12. Test validation errors - Password too short
+POST {{baseUrl}}/users
+Content-Type: application/json
+Cookie: {{token}}
+
+{
+  "name": "Test User",
+  "email": "test@example.com",
+  "password": "123"
+}
+
+### 13. Test duplicate email error
+POST {{baseUrl}}/users
+Content-Type: application/json
+Cookie: {{token}}
+
+{
+  "name": "Another User",
+  "email": "admin@example.com",
+  "password": "password123"
+}
+
+### 14. Test unauthorized access (without token)
+GET {{baseUrl}}/users
+
+### 15. Sign up as regular user
+POST {{baseUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "name": "Regular User",
+  "email": "user@example.com",
+  "password": "user123",
+  "role": "user"
+}
+
+### 16. Sign in as regular user
+# @name user_signin_response
+POST {{baseUrl}}/auth/signin
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "user123"
+}
+
+### 17. Try to access all users as regular user (should fail)
+GET {{baseUrl}}/users
+Cookie: {{user_signin_response.response.headers.set-cookie}}
+
+### 18. Try to create user as regular user (should fail)
+POST {{baseUrl}}/users
+Content-Type: application/json
+Cookie: {{user_signin_response.response.headers.set-cookie}}
+
+{
+  "name": "Test User",
+  "email": "test2@example.com",
+  "password": "password123"
+}
+
+### 19. Regular user accessing own profile (should work)
+GET {{baseUrl}}/users/3
+Cookie: {{user_signin_response.response.headers.set-cookie}}
+
+### 20. Regular user trying to access another user's profile (should fail)
+GET {{baseUrl}}/users/1
+Cookie: {{user_signin_response.response.headers.set-cookie}}

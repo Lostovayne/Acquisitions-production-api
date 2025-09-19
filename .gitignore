@@ -18,3 +18,6 @@ logs/
 # OS
 .DS_Store
 Thumbs.db
+
+# Build hash for dependency checking
+.last_package_hash

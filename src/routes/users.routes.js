@@ -1,16 +1,20 @@
-import { fetchAllUsers, fetchUserById } from '#controllers/users.controller';
+import {
+  createUserController,
+  deleteUserController,
+  fetchAllUsers,
+  fetchUserById,
+  updateUserController,
+} from '#controllers/users.controller';
+import { authenticateToken, requireAdmin } from '#middlewares/auth.middleware';
 import express from 'express';
 
 const userRouter = express.Router();
 
+userRouter.use(authenticateToken);
 userRouter.get('/', fetchAllUsers);
 userRouter.get('/:id', fetchUserById);
-userRouter.post('/', (req, res) => res.send('Create user route is working!'));
-userRouter.put('/:id', (req, res) =>
-  res.send(`Update user ID: ${req.params.id}`)
-);
-userRouter.delete('/:id', (req, res) =>
-  res.send(`Delete user ID: ${req.params.id}`)
-);
+userRouter.post('/', createUserController);
+userRouter.put('/:id', updateUserController);
+userRouter.delete('/:id', requireAdmin, deleteUserController);
 
 export default userRouter;
