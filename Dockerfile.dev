@@ -1,0 +1,28 @@
+# Development Dockerfile with hot reload
+FROM node:20-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Create non-root user for security
+RUN addgroup -g 1001 -S nodejs && \
+  adduser -S nextjs -u 1001
+
+# Copy package files
+COPY package*.json ./
+
+# Install all dependencies (including dev dependencies for development)
+RUN npm ci && npm cache clean --force
+
+# Copy source code
+COPY . .
+
+# Change ownership to non-root user
+RUN chown -R nextjs:nodejs /app
+USER nextjs
+
+# Expose port
+EXPOSE 3000
+
+# Start the application in development mode with hot reload
+CMD ["npm", "run", "dev"]
