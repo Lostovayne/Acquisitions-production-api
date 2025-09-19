@@ -7,16 +7,13 @@ services:
     container_name: acquisitions-neon-local
     ports:
       - '5432:5432'
-    environment:
-      NEON_API_KEY: ${NEON_API_KEY}
-      NEON_PROJECT_ID: ${NEON_PROJECT_ID}
-      PARENT_BRANCH_ID: ${PARENT_BRANCH_ID}
-      DELETE_BRANCH: 'true' # Creates ephemeral branches for development
+    env_file:
+      - .env.development
     volumes:
       # Persist Neon Local metadata
       - ./.neon_local/:/tmp/.neon_local
       # Git integration for branch detection
-      - ./.git/HEAD:/tmp/.git/HEAD:ro
+      - ./.git/HEAD:/tmp/.git/HEAD:ro,consistent
     healthcheck:
       test: ['CMD', 'pg_isready', '-h', 'localhost', '-p', '5432', '-U', 'neon']
       interval: 10s
@@ -33,12 +30,8 @@ services:
     container_name: acquisitions-api-dev
     ports:
       - '3000:3000'
-    environment:
-      NODE_ENV: development
-      DATABASE_URL: postgres://neon:npg@neon-local:5432/main?sslmode=require
-      PORT: 3000
-      JWT_SECRET: ${JWT_SECRET:-dev_jwt_secret_change_in_production}
-      LOG_LEVEL: debug
+    env_file:
+      - .env.development
     volumes:
       # Mount source code for development with hot reload
       - ./src:/app/src:ro

@@ -9,16 +9,8 @@ services:
     container_name: acquisitions-api-prod
     ports:
       - '3000:3000'
-    environment:
-      NODE_ENV: production
-      # Production database URL (directly to Neon Cloud)
-      DATABASE_URL: ${DATABASE_URL}
-      PORT: 3000
-      JWT_SECRET: ${JWT_SECRET}
-      LOG_LEVEL: info
-      HELMET_ENABLED: 'true'
-      CORS_ORIGIN: ${CORS_ORIGIN:-https://yourdomain.com}
-      ARCJET_KEY: ${ARCJET_KEY}
+    env_file:
+      - .env.production
     restart: unless-stopped
     healthcheck:
       test:
