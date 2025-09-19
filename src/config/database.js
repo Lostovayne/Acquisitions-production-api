@@ -13,8 +13,6 @@ if (isDevelopment) {
   neonConfig.useSecureWebSocket = false;
   neonConfig.poolQueryViaFetch = true;
 } else if (isProduction) {
-  // Configure for Neon Cloud (production)
-  // Use default Neon serverless configuration
   neonConfig.useSecureWebSocket = true;
   neonConfig.poolQueryViaFetch = false;
 }
