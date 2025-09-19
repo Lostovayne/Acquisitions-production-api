@@ -25,7 +25,14 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
-    "docker:dev": "sh ./scripts/dev.sh"
+    "docker:dev": "sh ./scripts/dev.sh",
+    "docker:prod": "sh ./scripts/prod.sh",
+    "docker:prod:detached": "docker-compose -f docker-compose.prod.yml --env-file .env.production up -d --build",
+    "docker:prod:down": "docker-compose -f docker-compose.prod.yml down",
+    "docker:restart": "sh ./scripts/restart-app.sh",
+    "docker:logs": "docker compose -f docker-compose.dev.yml logs -f app",
+    "docker:logs:all": "docker compose -f docker-compose.dev.yml logs -f",
+    "docker:shell": "docker compose -f docker-compose.dev.yml exec app sh"
   },
   "repository": {
     "type": "git",

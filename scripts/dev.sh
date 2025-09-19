@@ -9,9 +9,12 @@ echo "================================================"
 # Check if .env.development exists
 if [ ! -f .env.development ]; then
     echo "❌ Error: .env.development file not found!"
-    echo "   Please copy .env.development from the template and update with your Neon credentials."
+    echo "   Please make sure .env.development exists with your Neon credentials."
     exit 1
 fi
+
+# Load environment variables for local commands
+export $(cat .env.development | grep -v '^#' | xargs)
 
 # Check if Docker is running
 if ! docker info >/dev/null 2>&1; then
@@ -34,20 +37,24 @@ echo "   - Neon Local proxy will create an ephemeral database branch"
 echo "   - Application will run with hot reload enabled"
 echo ""
 
-# Run migrations with Drizzle
+# Start development environment first
+docker compose -f docker-compose.dev.yml --env-file .env.development up -d --build
+
+echo "⏳ Waiting for Neon Local to be ready..."
+sleep 10
+
+# Run migrations inside the container after PostgreSQL is ready
 echo "📜 Applying latest schema with Drizzle..."
-npm run db:migrate
+docker compose -f docker-compose.dev.yml exec app npm run db:migrate
 
-# Wait for the database to be ready
-echo "⏳ Waiting for the database to be ready..."
-docker compose exec neon-local psql -U neon -d neondb -c 'SELECT 1'
-
-# Start development environment
-docker compose -f docker-compose.dev.yml up --build
+# Show logs in foreground
+echo "📊 Showing application logs (Ctrl+C to stop)..."
+docker compose -f docker-compose.dev.yml logs -f
 
 echo ""
 echo "🎉 Development environment started!"
-echo "   Application: http://localhost:5173"
+echo "   Application: http://localhost:3000"
+echo "   Health Check: http://localhost:3000/health"
 echo "   Database: postgres://neon:npg@localhost:5432/neondb"
 echo ""
-echo "To stop the environment, press Ctrl+C or run: docker compose down"
+echo "To stop the environment, run: docker compose -f docker-compose.dev.yml down"
