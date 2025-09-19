@@ -1,0 +1,359 @@
+### ==============================================
+### ACQUISITIONS PRODUCTION API - TEST REQUESTS
+### ==============================================
+### 
+### This file contains comprehensive test requests for the API
+### Make sure your server is running on http://localhost:3000
+### 
+### Variables
+@baseUrl = http://localhost:3000
+@apiUrl = {{baseUrl}}/api
+
+### ==============================================
+### BASIC ENDPOINTS
+### ==============================================
+
+### Test root endpoint
+GET {{baseUrl}}/
+
+###
+
+### Check API health status
+GET {{baseUrl}}/health
+
+###
+
+### Test API base endpoint
+GET {{apiUrl}}
+
+### ==============================================
+### AUTHENTICATION ENDPOINTS
+### ==============================================
+
+### Sign Up - Valid User
+POST {{apiUrl}}/auth/sign-up
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "john.doe@example.com",
+  "password": "password123",
+  "role": "user"
+}
+
+###
+
+### Sign Up - Valid Admin
+POST {{apiUrl}}/auth/sign-up
+Content-Type: application/json
+
+{
+  "name": "Admin User",
+  "email": "admin@example.com",
+  "password": "adminpass123",
+  "role": "admin"
+}
+
+###
+
+### Sign Up - Invalid Email
+POST {{apiUrl}}/auth/sign-up
+Content-Type: application/json
+
+{
+  "name": "Invalid User",
+  "email": "invalid-email",
+  "password": "password123",
+  "role": "user"
+}
+
+###
+
+### Sign Up - Password too short
+POST {{apiUrl}}/auth/sign-up
+Content-Type: application/json
+
+{
+  "name": "Short Password User",
+  "email": "short@example.com",
+  "password": "123",
+  "role": "user"
+}
+
+###
+
+### Sign Up - Invalid role
+POST {{apiUrl}}/auth/sign-up
+Content-Type: application/json
+
+{
+  "name": "Invalid Role User",
+  "email": "invalidrole@example.com",
+  "password": "password123",
+  "role": "superadmin"
+}
+
+###
+
+### Sign Up - Missing fields
+POST {{apiUrl}}/auth/sign-up
+Content-Type: application/json
+
+{
+  "name": "Incomplete User",
+  "email": "incomplete@example.com"
+}
+
+###
+
+### Sign Up - Duplicate email (run this after a successful signup)
+POST {{apiUrl}}/auth/sign-up
+Content-Type: application/json
+
+{
+  "name": "Duplicate User",
+  "email": "john.doe@example.com",
+  "password": "password123",
+  "role": "user"
+}
+
+### ==============================================
+### SIGN IN ENDPOINT (Currently returns placeholder)
+### ==============================================
+
+### Sign In - Valid credentials (placeholder response)
+POST {{apiUrl}}/auth/sign-in
+Content-Type: application/json
+
+{
+  "email": "john.doe@example.com",
+  "password": "password123"
+}
+
+###
+
+### Sign In - Invalid email format
+POST {{apiUrl}}/auth/sign-in
+Content-Type: application/json
+
+{
+  "email": "invalid-email",
+  "password": "password123"
+}
+
+###
+
+### Sign In - Missing password
+POST {{apiUrl}}/auth/sign-in
+Content-Type: application/json
+
+{
+  "email": "john.doe@example.com"
+}
+
+### ==============================================
+### SIGN OUT ENDPOINT (Currently returns placeholder)
+### ==============================================
+
+### Sign Out
+POST {{apiUrl}}/auth/sign-out
+
+### ==============================================
+### ERROR HANDLING TESTS
+### ==============================================
+
+### Test invalid endpoint
+GET {{apiUrl}}/invalid-endpoint
+
+###
+
+### Test invalid HTTP method on existing endpoint
+PUT {{apiUrl}}/auth/sign-up
+
+###
+
+### Test malformed JSON
+POST {{apiUrl}}/auth/sign-up
+Content-Type: application/json
+
+{
+  "name": "Malformed JSON User",
+  "email": "malformed@example.com",
+  "password": "password123",
+  "role": "user"
+  // This comment makes it invalid JSON
+}
+
+###
+
+### Test empty request body
+POST {{apiUrl}}/auth/sign-up
+Content-Type: application/json
+
+{}
+
+### ==============================================
+### BOUNDARY VALUE TESTS
+### ==============================================
+
+### Sign Up - Name minimum length (2 characters)
+POST {{apiUrl}}/auth/sign-up
+Content-Type: application/json
+
+{
+  "name": "Jo",
+  "email": "jo@example.com",
+  "password": "password123",
+  "role": "user"
+}
+
+###
+
+### Sign Up - Name too short (1 character)
+POST {{apiUrl}}/auth/sign-up
+Content-Type: application/json
+
+{
+  "name": "J",
+  "email": "j@example.com",
+  "password": "password123",
+  "role": "user"
+}
+
+###
+
+### Sign Up - Maximum length name (255 characters)
+POST {{apiUrl}}/auth/sign-up
+Content-Type: application/json
+
+{
+  "name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+  "email": "longname@example.com",
+  "password": "password123",
+  "role": "user"
+}
+
+###
+
+### Sign Up - Minimum password length (6 characters)
+POST {{apiUrl}}/auth/sign-up
+Content-Type: application/json
+
+{
+  "name": "Min Password User",
+  "email": "minpass@example.com",
+  "password": "123456",
+  "role": "user"
+}
+
+###
+
+### Sign Up - Maximum password length (120 characters)
+POST {{apiUrl}}/auth/sign-up
+Content-Type: application/json
+
+{
+  "name": "Max Password User",
+  "email": "maxpass@example.com",
+  "password": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "role": "user"
+}
+
+### ==============================================
+### SPECIAL CHARACTERS AND ENCODING TESTS
+### ==============================================
+
+### Sign Up - Special characters in name
+POST {{apiUrl}}/auth/sign-up
+Content-Type: application/json
+
+{
+  "name": "José María Ñoño-Pérez",
+  "email": "jose.maria@example.com",
+  "password": "password123",
+  "role": "user"
+}
+
+###
+
+### Sign Up - Unicode characters
+POST {{apiUrl}}/auth/sign-up
+Content-Type: application/json
+
+{
+  "name": "用户测试 🚀",
+  "email": "unicode@example.com",
+  "password": "password123",
+  "role": "user"
+}
+
+###
+
+### Sign Up - Email with special characters
+POST {{apiUrl}}/auth/sign-up
+Content-Type: application/json
+
+{
+  "name": "Special Email User",
+  "email": "test+special.email-123@sub.example-domain.com",
+  "password": "password123",
+  "role": "user"
+}
+
+### ==============================================
+### PERFORMANCE TESTS (Rapid requests)
+### ==============================================
+
+### Rapid Sign Up requests (run multiple times quickly to test concurrency)
+POST {{apiUrl}}/auth/sign-up
+Content-Type: application/json
+
+{
+  "name": "Performance Test User 1",
+  "email": "perf1@example.com",
+  "password": "password123",
+  "role": "user"
+}
+
+###
+
+POST {{apiUrl}}/auth/sign-up
+Content-Type: application/json
+
+{
+  "name": "Performance Test User 2",
+  "email": "perf2@example.com",
+  "password": "password123",
+  "role": "user"
+}
+
+###
+
+POST {{apiUrl}}/auth/sign-up
+Content-Type: application/json
+
+{
+  "name": "Performance Test User 3",
+  "email": "perf3@example.com",
+  "password": "password123",
+  "role": "user"
+}
+
+### ==============================================
+### NOTES FOR TESTING
+### ==============================================
+###
+### 1. Start your server with: npm run dev
+### 2. Run tests by clicking "Send Request" above each request
+### 3. Expected responses:
+###    - Health check should return 200 with status info
+###    - Valid signup should return 201 with user data and set cookie
+###    - Invalid data should return 400 with validation errors
+###    - Duplicate email should return 409 with error message
+###    - Sign-in and sign-out currently return placeholder responses
+###
+### 4. Check the browser's developer tools to see cookies being set
+### 5. Monitor your server logs to see the morgan and winston logging
+### 6. Use different email addresses for each successful signup test
+###
+### ==============================================

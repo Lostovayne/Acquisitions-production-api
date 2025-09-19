@@ -1,4 +1,6 @@
 import logger from '#config/logger';
+import { errorHandler, notFoundHandler } from '#middlewares/error.middleware';
+import { securityMiddleware } from '#middlewares/security.middleware';
 import authRoutes from '#routes/auth.routes';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
@@ -19,6 +21,7 @@ app.use(
     stream: { write: message => logger.info(message.trim()) },
   })
 );
+app.use(securityMiddleware);
 
 // Routes
 app.get('/', (req, res) => res.send('Welcome to the API'));
@@ -36,5 +39,11 @@ app.get('/api', (req, res) =>
 );
 
 app.use('/api/auth', authRoutes);
+
+// 404 handler - must be after all routes
+app.use(notFoundHandler);
+
+// Global error handler - must be last
+app.use(errorHandler);
 
 export default app;
