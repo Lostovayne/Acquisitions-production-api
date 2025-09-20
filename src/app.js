@@ -56,7 +56,6 @@ app.use('/api/users', userRoutes);
 
 // 404 handler - must be after all routes
 app.use(notFoundHandler);
-
 // Global error handler - must be last
 app.use(errorHandler);
 
